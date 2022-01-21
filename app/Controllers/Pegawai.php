@@ -63,4 +63,53 @@ class Pegawai extends BaseController
 
     return $this->respond($response);
   }
+
+  public function update($id = null)
+  {
+    $data = $this->request->getRawInput();
+    $data["id"] = $id;
+
+    $isExists = $this->model->find($id);
+
+    if (!$isExists) {
+      return $this->failNotFound("Pegawai dengan ID {$id} tidak ditemukan");
+    }
+
+    if (!$this->model->save($data)) {
+      return $this->fail($this->model->errors());
+    };
+
+    $response = [
+      "status" => 200,
+      "error" => null,
+      "message" => [
+        "success" => "Data berhasil diubah"
+      ],
+      "result" => $this->model->find($id)
+    ];
+
+    return $this->respond($response);
+  }
+
+  public function delete($id = null)
+  {
+    $data = $this->model->find($id);
+
+    if (!$data) {
+      return $this->failNotFound("Pegawai dengan ID {$id} tidak ditemukan");
+    }
+
+    $this->model->delete($id);
+
+    $response = [
+      "status" => 200,
+      "error" => null,
+      "message" => [
+        "success" => "Data berhasil dihapus"
+      ],
+      "result" => $data
+    ];
+
+    return $this->respond($response);
+  }
 }

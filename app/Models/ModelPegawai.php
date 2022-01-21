@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use Config\Validation;
 
 class ModelPegawai extends Model
 {
